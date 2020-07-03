@@ -18,6 +18,7 @@ class Diagramm_Zeiger():
     def _daten_trenner_(self):
         daten = self.daten
         daten = daten.set_index("Date")
+        daten["Active Case"] = daten["Confirmed"]-daten["Recovered"]-daten["Deaths"]
         land_wörterbuch = dict()
         for land in daten.groupby("Country"):
             land_wörterbuch[land[0]] = land[1]

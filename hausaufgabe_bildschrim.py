@@ -33,7 +33,7 @@ class Bildschrim(QWidget):
     def _zeig_(self):
         übersetzer = Übersetzer()
         wörterbuch = {"Genesene":"Recovered","Bestätigt":"Confirmed","Tod":"Deaths"}
-        wahl_liste = list()
+        wahl_liste = ["Active Case"]
         lande = self.textArea.toPlainText().split(",")
         lande2 = list()
         checkListe = [self.checkBoxBestätigt,self.checkBoxGenesene,self.checkBoxTod]
@@ -41,14 +41,13 @@ class Bildschrim(QWidget):
             if checkBox.isChecked():
                 wahl_liste.append(wörterbuch[checkBox.text()])
         for land in lande:
-            lande2.append(übersetzer.übersetzen_deutsch_in_englisch(land).title())
+            if(land == "USA"):
+                lande2.append("US")
+            else:
+                lande2.append(übersetzer.übersetzen_deutsch_in_englisch(land).title())
         diagramm_zeiger = Diagramm_Zeiger("dataset.csv",wahl_liste,lande2)
         try:
             diagramm_zeiger.zeig_liniendiagramm_diagramm()
         except KeyError:
             lande2 = list()
             self.textAreaLabel.setText("Schreiben Sie Bitte ordentlich")
-if __name__=="__main__":
-    app = QApplication(sys.argv)
-    bildschrim = Bildschrim()
-    sys.exit(app.exec_())
